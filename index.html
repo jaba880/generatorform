@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой Генератор</title>
+    <style>
+        body { background: #1a1a1a; color: white; font-family: sans-serif; padding: 20px; }
+        input { display: block; margin-bottom: 10px; width: 300px; padding: 5px; }
+        textarea { width: 100%; height: 100px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Генератор заявки</h2>
+    <input type="text" id="nickname" placeholder="Ваш ник (Name_Surname)">
+    <input type="number" id="age" placeholder="Ваш возраст">
+    <button onclick="generate()">Сгенерировать код</button>
+
+    <textarea id="result" readonly placeholder="Здесь появится BB-код для форума..."></textarea>
+
+    <script>
+        function generate() {
+            let nick = document.getElementById('nickname').value;
+            let age = document.getElementById('age').value;
+            // Формируем BB-код
+            let bbCode = "[center][b]ЗАЯВКА В SFSO[/b][/center]\n\n";
+            bbCode += "[b]Имя пользователя:[/b] " + nick + "\n";
+            bbCode += "[b]Возраст:[/b] " + age + " лет";
+            
+            document.getElementById('result').value = bbCode;
+        }
+    </script>
+</body>
+</html>
