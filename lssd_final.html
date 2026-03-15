@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>LSSD BackHome Generator</title>
+    <style>
+        body { background-color: #0b0e11; color: #4dc2bb; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .main-card { width: 800px; background: #0d1117; border: 1px solid #1c2626; padding: 30px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        h2 { text-align: center; color: #4dc2bb; font-size: 20px; text-transform: uppercase; margin-bottom: 25px; border-bottom: 1px solid #1b3d3a; padding-bottom: 10px; }
+        
+        .section { border: 1px solid #1b3d3a; padding: 20px; margin-bottom: 20px; background: #0d1117; }
+        .section-title { color: #fff; font-size: 14px; margin-bottom: 15px; font-weight: bold; text-decoration: underline; }
+
+        label { display: block; font-size: 13px; margin-bottom: 8px; font-weight: bold; color: #4dc2bb; }
+        input, textarea { 
+            width: 100%; background: #12181d; border: 1px solid #1b3d3a; 
+            color: #58a6a1; padding: 10px; margin-bottom: 15px; 
+            box-sizing: border-box; font-size: 13px; outline: none;
+        }
+        input:focus, textarea:focus { border-color: #4dc2bb; }
+
+        .btn-generate { 
+            width: 100%; background: #2a5a56; color: #fff; border: none; 
+            padding: 15px; cursor: pointer; text-transform: uppercase; 
+            font-weight: bold; letter-spacing: 1px; transition: 0.2s;
+        }
+        .btn-generate:hover { background: #357570; }
+
+        #result { 
+            display: none; background: #050505; color: #00ff00; padding: 20px; 
+            margin-top: 25px; border: 1px dashed #4dc2bb; font-family: monospace; 
+            font-size: 12px; white-space: pre-wrap; word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-card">
+    <h2>Генератор заявления LSSD</h2>
+    
+    <div class="section">
+        <div class="section-title">ИГРОВАЯ ИНФОРМАЦИЯ</div>
+        <label>1. Фракции, никнеймы, должности и даты (через запятую):</label>
+        <textarea id="exp" rows="3" placeholder="Ivan_Ivanov, Trinity RP #1, LSPD, PO II, ПСЖ 10.01.2024"></textarea>
+
+        <label>2. Ссылки на СС / Доказательства игры:</label>
+        <input type="text" id="proofs" placeholder="https://imgur.com...">
+
+        <label>3. Описание будущей роли (квента от 3-4 предложений):</label>
+        <textarea id="role_desc" rows="4"></textarea>
+
+        <label>4. Список пожеланий / Комментарий:</label>
+        <input type="text" id="comment" placeholder="Хочу в отдел SEB...">
+    </div>
+
+    <div class="section">
+        <div class="section-title">ЛИЧНЫЕ ДАННЫЕ</div>
+        <label>Имя:</label>
+        <input type="text" id="real_name" placeholder="Иван">
+
+        <label>Возраст:</label>
+        <input type="text" id="age" placeholder="20">
+
+        <label>Ник в Telegram (без @):</label>
+        <input type="text" id="tg" placeholder="ivan_tg">
+
+        <label>Ссылка на скриншот Google Authenticator:</label>
+        <input type="text" id="gauth" placeholder="https://yapx.ru...">
+    </div>
+
+    <button class="btn-generate" onclick="generate()">Сгенерировать код для форума</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+function generate() {
+    // Сбор данных из полей
+    const exp = document.getElementById('exp').value || "Заполнить";
+    const proofs = document.getElementById('proofs').value || "Заполнить";
+    const role = document.getElementById('role_desc').value || "Описание вашего будущего персонажа...";
+    const comment = document.getElementById('comment').value || "Заполнить";
+    const name = document.getElementById('real_name').value || "Заполнить";
+    const age = document.getElementById('age').value || "XX";
+    const tg = document.getElementById('tg').value || "username";
+    const gauth = document.getElementById('gauth').value || "Ссылка на скриншот";
+
+    // Формирование точного BB-кода по твоему шаблону
+    const bbCode = `[box=#354920][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Департамент шерифа Лос Сантоса > Карьера > Программа «Возвращение домой»[/color][/box]
+[b][size=115][border=#354920]Заявление[/border][/size][/b]
+[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
+[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proofs}
+[*][b]Планируемая роль во фракции:[/b]
+[spoiler="Роль"]${role}[/spoiler]
+[*][b]Список пожеланий, комментарий:[/b] ${comment}
+
+[*][b]Имя:[/b] ${name}
+[*][b]Возраст:[/b] ${age} лет
+[*][b]Ссылка на аккаунт в TG:[/b] [url=https://t.me{tg}]${tg}[/url]
+[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${gauth}]Ссылка на скриншот[/url][/list]
+
+[hr][/hr]
+[b][size=115][border=#354920]Соглашение[/border][/size][/b]
+[list][b]Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением:[/b]
+
+[list][i] [justify]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества. Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/justify][/i][/list][/list]
+
+[box=#354920][color=#FFFFFF][size=85][center]© 2024. Департамент шерифа округа Лос-Сантос. Все права защищены.[/center][/size][/color][/box]`;
+
+    const res = document.getElementById('result');
+    res.innerText = bbCode;
+    res.style.display = 'block';
+    
+    // Плавный скролл к результату
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
