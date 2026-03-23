@@ -208,70 +208,72 @@
 
         <div class="main-container">
     <!-- Блок соглашения -->
-    <div style="background: #0f2940; padding: 20px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
-        <p style="color: #fff; font-size: 13px; line-height: 1.6; margin-bottom: 15px;">
-            Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества. Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.
-        </p>
-        
-        <!-- Галочка теперь ПОД текстом -->
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-            <input type="checkbox" id="final_agree" style="width: 18px; height: 18px; cursor: pointer;">
-            <label for="final_agree" style="color: #3498db; font-weight: bold; cursor: pointer; user-select: none;">
-                Я ПОДТВЕРЖДАЮ И СОГЛАСЕН
-            </label>
-        </div>
-    </div>
-
-    <!-- Большая зеленая кнопка -->
-    <button type="button" class="btn-generate" onclick="sendToForum()" style="background: #27ae60; color: white; border: none; padding: 20px; width: 100%; font-size: 18px; font-weight: bold; cursor: pointer; text-transform: uppercase;">
-        ОТПРАВИТЬ ЗАЯВКУ НА ФОРУМ
-    </button>
+   <div style="background: #0f2940; padding: 20px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+    <p style="color: #fff; font-size: 13px; margin-bottom: 15px;">Я соглашаюсь со всеми правилами и условиями...</p>
+    <input type="checkbox" id="final_agree">
+    <label for="final_agree" style="color: #3498db; font-weight: bold;">Я ПОДТВЕРЖДАЮ И СОГЛАСЕН</label>
 </div>
 
-    </form>
+<!-- Кнопка теперь запускает хитрую отправку -->
+<button type="button" class="btn-generate" onclick="submitToForum()">
+    ОТПРАВИТЬ ЗАЯВКУ НА ФОРУМ
+</button>
+
+<!-- Скрытая форма для обхода лимита ссылки -->
+<form id="hiddenForumForm" action="https://pd-ls.ru" method="POST" target="_blank" style="display:none;">
+    <input type="hidden" name="subject" id="form_subject">
+    <textarea name="message" id="form_message"></textarea>
+    <input type="hidden" name="post" value="1">
+</form>
     <div id="result-area" style="display: none; margin-top: 30px;">
         <p style="color: #27ae60; font-weight: bold;">Код скопирован в буфер обмена!</p>
         <textarea id="bbcode-output" readonly style="width: 100%; height: 200px; background: #000; color: #fff; padding: 10px; border: 1px solid #0f2940;"></textarea>
     </div>
 </div>
     <script>
-       function sendToForum() {
+       function submitToForum() {
     // 1. Проверка галочки
-    const check = document.getElementById('final_agree');
-    if (!check || !check.checked) {
+    if (!document.getElementById('final_agree').checked) {
         alert("Сначала примите условия соглашения!");
         return;
     }
 
-    // 2. Сбор данных (Убедись, что ID полей в HTML именно такие)
+    // 2. Сбор данных из полей конструктора
     const name = document.getElementById('name')?.value || "Заполнить";
     const exp = document.getElementById('exp')?.value || "Заполнить";
     const proof = document.getElementById('proof')?.value || "Заполнить";
     const role = document.getElementById('role')?.value || "Заполнить";
-    const vk = document.getElementById('vk')?.value || "https://vk.com";
-    const auth = document.getElementById('auth')?.value || "Ссылка";
+    const wishes = document.getElementById('wishes')?.value || "Заполнить";
 
-    // 3. Твой шаблон BB-кода
-    const bb = `[box=#0f2940][img]https://www.upload.ee[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
+    // 3. Формируем чистый BB-код
+     const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
 [b][size=115][border=#0f2940]Заявление[/border][/size][/b]
-[list=1][*][b]Фракции в которых состояли:[/b] ${exp}
-[*][b]Доказательства игры:[/b] ${proof}
-[*][b]Планируемая роль:[/b] [spoiler="Роль"]${role}[/spoiler]
-[*][b]Имя:[/b] ${name}
-[*][b]Ссылка на ВК:[/b] [url=${vk}]Имя Фамилия[/url]
-[*][b]Скриншот GA:[/b] [url=${auth}]Ссылка[/url][/list]
-[box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 LSPD. All rights reserved.[/center][/size][/color][/box]`;
+[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
+[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proof}
+[*][b]Планируемая роль во фракции:[/b]
+[spoiler="Роль"]${role}[/spoiler]
+[*][b]Список пожеланий, комментарий:[/b] ${wishes}
 
-    // 4. ГЕНЕРАЦИЯ ССЫЛКИ ДЛЯ АВТОВСТАВКИ
-    // Мы используем encodeURIComponent, чтобы символы [ ] # и прочие не ломали ссылку
-    const encodedMsg = encodeURIComponent(bb);
-    const subject = encodeURIComponent(`BackHome - ${name}`);
-    
-    // Формируем финальную прямую ссылку
-    const finalUrl = `https://pd-ls.ru/posting.php?mode=post&f=24{subject}&message=${encodedMsg}`;
+[*][b]Имя:[/b] ${nameIC}
+[*][b]Возраст:[/b] ${age} лет
+[*][b]Ссылка на профиль ВК:[/b] [url=${vkLink}]Имя Фамилия[/url]
+[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${auth}]Ссылка на скриншот[/url][/list]
 
-    // 5. ПЕРЕХОД
-    window.location.href = finalUrl;
+[hr][/hr]
+[b][size=115][border=#0f2940]Соглашение[/border][/size][/b]
+[list][b]Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением:[/b]
+[list][i]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
+
+Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
+
+[box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
+    // 4. Запихиваем данные в скрытую форму
+    document.getElementById('form_subject').value = "BackHome Application - " + name;
+    document.getElementById('form_message').value = bb;
+
+    // 5. ФИНАЛЬНЫЙ ВЫСТРЕЛ: Отправляем форму
+    alert("Заявка сформирована! Сейчас откроется форум, и тебе останется только нажать кнопку 'Отправить' внизу страницы.");
+    document.getElementById('hiddenForumForm').submit();
 }
     </script>
 </body>
