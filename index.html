@@ -236,47 +236,41 @@
 </div>
     <script>
        function sendToForum() {
-    // Проверка галочки
+    // 1. Проверка галочки
     const check = document.getElementById('final_agree');
     if (!check || !check.checked) {
         alert("Сначала примите условия соглашения!");
         return;
     }
 
-    // Сбор данных из полей (Убедись, что ID совпадают с твоими input!)
+    // 2. Сбор данных (Убедись, что ID полей в HTML именно такие)
     const name = document.getElementById('name')?.value || "Заполнить";
-    const age = document.getElementById('age')?.value || "XX";
     const exp = document.getElementById('exp')?.value || "Заполнить";
     const proof = document.getElementById('proof')?.value || "Заполнить";
     const role = document.getElementById('role')?.value || "Заполнить";
     const vk = document.getElementById('vk')?.value || "https://vk.com";
     const auth = document.getElementById('auth')?.value || "Ссылка";
-    const wishes = document.getElementById('wishes')?.value || "Заполнить";
 
-    // Формируем BB-код
+    // 3. Твой шаблон BB-кода
     const bb = `[box=#0f2940][img]https://www.upload.ee[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
 [b][size=115][border=#0f2940]Заявление[/border][/size][/b]
-[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
-[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proof}
-[*][b]Планируемая роль во фракции:[/b]
-[spoiler="Роль"]${role}[/spoiler]
-[*][b]Список пожеланий, комментарий:[/b] ${wishes}
-
+[list=1][*][b]Фракции в которых состояли:[/b] ${exp}
+[*][b]Доказательства игры:[/b] ${proof}
+[*][b]Планируемая роль:[/b] [spoiler="Роль"]${role}[/spoiler]
 [*][b]Имя:[/b] ${name}
-[*][b]Возраст:[/b] ${age}
-[*][b]Ссылка на профиль ВК:[/b] [url=${vk}]Ссылка[/url]
-[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${auth}]Ссылка на скриншот[/url][/list]
-[hr][/hr]
-[box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
+[*][b]Ссылка на ВК:[/b] [url=${vk}]Имя Фамилия[/url]
+[*][b]Скриншот GA:[/b] [url=${auth}]Ссылка[/url][/list]
+[box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 LSPD. All rights reserved.[/center][/size][/color][/box]`;
 
-    // Кодируем для URL
+    // 4. ГЕНЕРАЦИЯ ССЫЛКИ ДЛЯ АВТОВСТАВКИ
+    // Мы используем encodeURIComponent, чтобы символы [ ] # и прочие не ломали ссылку
     const encodedMsg = encodeURIComponent(bb);
-    const subject = encodeURIComponent(`Заявление на BackHome - ${name}`);
+    const subject = encodeURIComponent(`BackHome - ${name}`);
     
-    // Пытаемся передать в окно сообщения
+    // Формируем финальную прямую ссылку
     const finalUrl = `https://pd-ls.ru/posting.php?mode=post&f=24{subject}&message=${encodedMsg}`;
 
-    // ПЕРЕХОД
+    // 5. ПЕРЕХОД
     window.location.href = finalUrl;
 }
     </script>
