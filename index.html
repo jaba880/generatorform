@@ -206,59 +206,71 @@
                 <input type="text" id="contact" placeholder="Заполнить">
               </div> 
 
-        <button type="button" class="btn-generate" onclick="generateBB()">
-            СФОРМИРОВАТЬ BB-КОД
-        </button>
-    </form>
+        <div style="margin: 20px 0; padding: 15px; background: #1a2a35; border: 1px solid #0f2940; text-align: center;">
+    <input type="checkbox" id="agree_check" style="transform: scale(1.3); cursor: pointer;">
+    <label for="agree_check" style="color: #fff; font-size: 14px; margin-left: 10px; cursor: pointer; user-select: none;">
+        Я принимаю условия соглашения и подтверждаю правдивость данных.
+    </label>
+</div>
 
+<button type="button" class="btn-generate" onclick="sendToForum()">
+    ОТПРАВИТЬ ЗАЯВКУ НА ФОРУМ
+</button>
+    </form>
     <div id="result-area" style="display: none; margin-top: 30px;">
         <p style="color: #27ae60; font-weight: bold;">Код скопирован в буфер обмена!</p>
         <textarea id="bbcode-output" readonly style="width: 100%; height: 200px; background: #000; color: #fff; padding: 10px; border: 1px solid #0f2940;"></textarea>
     </div>
 </div>Ы
     <script>
-       function generateBB() {
-    // Получаем данные из полей (убедись, что ID полей в HTML соответствуют этим названиям)
-    const nameIC = document.getElementById('name').value || "Заполнить";
-    const age = document.getElementById('age')?.value || "XX"; 
-    const vkLink = document.getElementById('contact').value || "https://vk.com/IDVK";
-    const exp = document.getElementById('exp').value || "Заполнить";
-    const proof = document.getElementById('proof').value || "Заполнить";
-    const role = document.getElementById('role')?.value || "описание вашего будущего персонажа...";
-    const wishes = document.getElementById('wishes')?.value || "Заполнить";
-    const auth = document.getElementById('auth')?.value || "Ссылка на скриншот";
+       function sendToForum() {
+    // 1. Проверка галочки
+    const isAgreed = document.getElementById('agree_check').checked;
+    if (!isAgreed) {
+        alert("Сначала примите условия соглашения!");
+        return;
+    }
 
-    // Формируем строгий формат по твоему образцу
-    const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
+    // 2. Сбор данных
+    const d = {
+        name: document.getElementById('name').value || "Заполнить",
+        age: document.getElementById('age').value || "XX",
+        exp: document.getElementById('exp').value || "Заполнить",
+        proof: document.getElementById('proof').value || "Заполнить",
+        role: document.getElementById('role').value || "Описание...",
+        vk: document.getElementById('vk').value || "https://vk.com",
+        auth: document.getElementById('auth').value || "Ссылка",
+        wishes: document.getElementById('wishes').value || "Заполнить"
+    };
+
+    // 3. Формируем BB-код
+    const bb = `[box=#0f2940][img]https://www.upload.ee[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
 [b][size=115][border=#0f2940]Заявление[/border][/size][/b]
-[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
-[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proof}
+[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${d.exp}
+[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${d.proof}
 [*][b]Планируемая роль во фракции:[/b]
-[spoiler="Роль"]${role}[/spoiler]
-[*][b]Список пожеланий, комментарий:[/b] ${wishes}
+[spoiler="Роль"]${d.role}[/spoiler]
+[*][b]Список пожеланий, комментарий:[/b] ${d.wishes}
 
-[*][b]Имя:[/b] ${nameIC}
-[*][b]Возраст:[/b] ${age} лет
-[*][b]Ссылка на профиль ВК:[/b] [url=${vkLink}]Имя Фамилия[/url]
-[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${auth}]Ссылка на скриншот[/url][/list]
+[*][b]Имя:[/b] ${d.name}
+[*][b]Возраст:[/b] ${d.age} лет
+[*][b]Ссылка на профиль ВК:[/b] [url=${d.vk}]Ссылка[/url]
+[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${d.auth}]Ссылка на скриншот[/url][/list]
 
 [hr][/hr]
 [b][size=115][border=#0f2940]Соглашение[/border][/size][/b]
 [list][b]Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением:[/b]
-[list][i]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
-
-Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
+[list][i]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми...[/i][/list][/list]
 
 [box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
 
-    // Вывод и автокопирование
-    const output = document.getElementById('bbcode-output');
-    output.value = bb;
-    document.getElementById('result-area').style.display = 'block';
-    output.select();
-    document.execCommand('copy');
-    
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    // 4. КОДИРОВАНИЕ И АВТОВСТАВКА
+    // encodeURIComponent превращает текст в формат, понятный для ссылки
+    const encodedBB = encodeURIComponent(bb);
+    const forumUrl = `https://pd-ls.ru{encodedBB}`;
+
+    // 5. Переход
+    window.location.href = forumUrl;
 }
     </script>
 </body>
