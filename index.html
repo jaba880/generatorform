@@ -208,24 +208,25 @@
 
         <div class="main-container">
     <!-- Блок соглашения -->
-   <div style="background: #0f2940; padding: 20px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
-    <p style="color: #fff; font-size: 13px; margin-bottom: 15px;">Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
+  <div style="text-align: center; margin-top: 30px;">
+    <div style="margin-bottom: 15px;">
+        <input type="checkbox" id="final_agree" style="transform: scale(1.5); cursor: pointer;">
+        <label for="final_agree" style="color: #fff; margin-left: 10px; cursor: pointer; font-family: Arial;">
+            Я подтверждаю и согласен с условиями
+        </label>
+    </div>
 
-Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.
-        <input type="checkbox" id="final_agree">
-</p>
+    <!-- Та самая кнопка -->
+    <button type="button" class="btn-generate" onclick="fullAutoSubmit()" style="background: #27ae60; color: white; border: none; padding: 20px 40px; font-size: 20px; font-weight: bold; cursor: pointer; border-radius: 5px; text-transform: uppercase;">
+        Отправить заявку на форум
+    </button>
 </div>
 
-<!-- Кнопка теперь запускает хитрую отправку -->
-<button type="button" class="btn-generate" onclick="submitToForum()">
-    ОТПРАВИТЬ ЗАЯВКУ НА ФОРУМ
-</button>
-
-<!-- Скрытая форма для обхода лимита ссылки -->
-<form id="hiddenForumForm" action="https://pd-ls.ru/posting.php?mode=post&f=24" method="POST" target="_blank" style="display:none;">
-    <input type="hidden" name="subject" id="form_subject">
-    <textarea name="message" id="form_message"></textarea>
-    <input type="hidden" name="post" value="1">
+<!-- СКРЫТАЯ ФОРМА: Она не видна юзеру, но делает всю работу -->
+<form id="autoForumForm" action="https://pd-ls.ru" method="POST" style="display:none;">
+    <input type="hidden" name="subject" id="post_subject">
+    <textarea name="message" id="post_message"></textarea>
+    <input type="hidden" name="post" value="1"> 
 </form>
     <div id="result-area" style="display: none; margin-top: 30px;">
         <p style="color: #27ae60; font-weight: bold;">Код скопирован в буфер обмена!</p>
@@ -233,19 +234,19 @@
     </div>
 </div>
     <script>
-       function submitToForum() {
-    // 1. Проверка галочки
-    if (!document.getElementById('final_agree').checked) {
-        alert("Сначала примите условия соглашения!");
+       function fullAutoSubmit() {
+    // 1. Проверка галочки (БЕЗ НЕЁ НЕ ПУСТИТ)
+    const agreed = document.getElementById('final_agree').checked;
+    if (!agreed) {
+        alert("ОШИБКА: Сначала примите условия соглашения!");
         return;
     }
 
-    // 2. Сбор данных из полей конструктора
+    // 2. Сбор данных (убедись, что ID полей в твоем HTML совпадают!)
     const name = document.getElementById('name')?.value || "Заполнить";
     const exp = document.getElementById('exp')?.value || "Заполнить";
     const proof = document.getElementById('proof')?.value || "Заполнить";
     const role = document.getElementById('role')?.value || "Заполнить";
-    const wishes = document.getElementById('wishes')?.value || "Заполнить";
 
     // 3. Формируем чистый BB-код
      const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
@@ -269,13 +270,13 @@
 Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
 
 [box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
-    // 4. Запихиваем данные в скрытую форму
-    document.getElementById('form_subject').value = "BackHome Application - " + name;
-    document.getElementById('form_message').value = bb;
+     // 4. Загружаем данные в скрытую форму
+    document.getElementById('post_subject').value = "BackHome Application - " + name;
+    document.getElementById('post_message').value = bbCode;
 
-    // 5. ФИНАЛЬНЫЙ ВЫСТРЕЛ: Отправляем форму
-    alert("Заявка сформирована! Сейчас откроется форум, и тебе останется только нажать кнопку 'Отправить' внизу страницы.");
-    document.getElementById('hiddenForumForm').submit();
+    // 5. ФИНАЛЬНЫЙ АВТОМАТ: Отправляем данные на форум
+    alert("Заявка сформирована! Сейчас откроется страница форума с уже готовым текстом. Тебе останется только нажать 'Отправить' внизу.");
+    document.getElementById('autoForumForm').submit();
 }
     </script>
 </body>
