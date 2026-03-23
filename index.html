@@ -221,7 +221,7 @@
         <p style="color: #27ae60; font-weight: bold;">Код скопирован в буфер обмена!</p>
         <textarea id="bbcode-output" readonly style="width: 100%; height: 200px; background: #000; color: #fff; padding: 10px; border: 1px solid #0f2940;"></textarea>
     </div>
-</div>Ы
+</div>
     <script>
        function sendToForum() {
     // 1. Проверка галочки
@@ -267,7 +267,7 @@
     // 4. КОДИРОВАНИЕ И АВТОВСТАВКА
     // encodeURIComponent превращает текст в формат, понятный для ссылки
     const encodedBB = encodeURIComponent(bb);
-    const forumUrl = `https://pd-ls.ru{encodedBB}`;
+    const forumUrl = `https://pd-ls.ru/posting.php?mode=post&f=24{encodedBB}`;
 
     // 5. Переход
     window.location.href = forumUrl;
