@@ -2,197 +2,237 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BackHome Program | pd-ls.ru</title>
+    <title>BackHome Generator | pd-ls.ru</title>
     <style>
-        /* Основные стили */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1a1a1a;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Центрирование контента */
+        :root {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --accent-blue: #3498db;
+            --text-main: #e0e0e0;
+            --input-bg: #2a2a2a;
         }
 
-        .container {
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 50px;
+        }
+
+        /* Шапка с экстренными службами */
+        .emergency-nav {
             width: 100%;
-            max-width: 900px;
-            background: #252525;
+            background: #181818;
+            padding: 15px 0;
+            border-bottom: 2px solid var(--accent-blue);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            background: none;
+            border: 2px solid var(--accent-blue);
+            color: white;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #252525;
+            min-width: 250px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #333;
+        }
+
+        .dropdown-content a:hover { background-color: #333; }
+        .dropdown-content img { width: 30px; height: 30px; }
+        .dropdown:hover .dropdown-content { display: block; }
+
+        /* Контейнер формы */
+        .main-container {
+            max-width: 800px;
+            width: 95%;
+            margin-top: 40px;
+            background: var(--container-bg);
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 4px;
             text-align: center;
         }
 
-        /* Логотипы и ссылки */
-        .emergency-header {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
+        h1 { font-size: 28px; letter-spacing: 3px; margin-bottom: 5px; }
+        .sub-header { color: #888; font-size: 14px; margin-bottom: 40px; }
+
+        h2 {
+            font-size: 20px;
+            color: var(--accent-blue);
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-top: 40px;
+            text-transform: uppercase;
         }
 
-        .service-link {
-            text-decoration: none;
-            color: #fff;
-            font-weight: bold;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-
-        .service-link img {
-            width: 80px;
-            display: block;
-            margin: 0 auto 10px;
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
-        }
-
-        .service-link:hover {
-            color: #3498db;
-            transform: translateY(-5px);
-        }
-
-        h1 { color: #fff; text-transform: uppercase; letter-spacing: 2px; }
-        p.subtitle { color: #888; margin-bottom: 40px; }
-
-        /* Форма */
-        .form-group {
-            margin-bottom: 25px;
+        .field {
             text-align: left;
+            margin-bottom: 20px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #3498db;
-        }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 13px; }
 
-        input[type="text"], 
-        input[type="url"], 
-        textarea, 
-        select {
+        input, textarea, select {
             width: 100%;
-            padding: 12px;
-            background: #333;
+            background: var(--input-bg);
             border: 1px solid #444;
-            border-radius: 5px;
-            color: #fff;
+            color: white;
+            padding: 12px;
+            border-radius: 3px;
             box-sizing: border-box;
         }
 
-        textarea { height: 120px; resize: vertical; }
-
-        .btn-submit {
-            background: #2980b9;
+        .btn-generate {
+            background: #27ae60;
             color: white;
-            padding: 15px 40px;
             border: none;
-            border-radius: 5px;
+            padding: 15px 30px;
             font-size: 18px;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 20px;
-            text-transform: uppercase;
             font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            width: 100%;
+            transition: 0.3s;
         }
 
-        .btn-submit:hover { background: #3498db; }
+        .btn-generate:hover { background: #2ecc71; }
 
-        hr { border: 0; border-top: 1px solid #444; margin: 40px 0; }
+        /* Окно с результатом */
+        #result-area {
+            display: none;
+            margin-top: 30px;
+            background: #000;
+            padding: 20px;
+            border: 1px dashed var(--accent-blue);
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Блок ссылок экстренных служб -->
-        <div class="emergency-header">
-            <a href="https://pd-ls.ru" class="service-link">
-                <img src="https://upload.wikimedia.org" alt="LSPD">
-                LSPD
-            </a>
-            <a href="#" class="service-link">
-                <img src="https://upload.wikimedia.org" alt="LSSD">
-                LSSD
-            </a>
-            <a href="#" class="service-link">
-                <img src="https://upload.wikimedia.org" alt="FBI">
-                FBI
-            </a>
+    <!-- Навигация -->
+    <nav class="emergency-nav">
+        <div class="dropdown">
+            <button class="dropbtn">Для экстренных служб ▼</button>
+            <div class="dropdown-content">
+                <a href="https://pd-ls.ru" target="_blank">
+                    <img src="https://upload.wikimedia.org" alt="LSPD">
+                    Los Santos Police Dept.
+                </a>
+                <a href="#" target="_blank">
+                    <img src="https://upload.wikimedia.org" alt="LSSD">
+                    L.A. County Sheriff
+                </a>
+                <a href="#" target="_blank">
+                    <img src="https://upload.wikimedia.org" alt="FBI">
+                    Federal Bureau
+                </a>
+            </div>
         </div>
+    </nav>
 
-        <h1>Программа BackHome</h1>
-        <p class="subtitle">Подача заявления на восстановление в департамент pd-ls.ru</p>
+    <div class="main-container">
+        <h1>ПРОГРАММА BACKHOME</h1>
+        <div class="sub-header">Подача заявления на восстановление в департамент pd-ls.ru</div>
 
-        <form id="backhomeForm">
-            <!-- Часть I: Личная информация -->
-            <h2 style="color: #fff; border-bottom: 1px solid #3498db; display: inline-block;">I. Личные данные</h2>
-            
-            <div class="form-group">
+        <form id="bhForm">
+            <!-- Блок I -->
+            <h2>I. Личные данные</h2>
+            <div class="field">
                 <label>Имя и Фамилия (IC):</label>
-                <input type="text" placeholder="Напр. John Doe" required>
+                <input type="text" id="name" placeholder="Напр. John Doe">
+            </div>
+            <div class="field">
+                <label>Ссылка на VK / Discord:</label>
+                <input type="text" id="contact" placeholder="://vk.com или user#0000">
             </div>
 
-            <div class="form-group">
-                <label>Ваш возраст (IC):</label>
-                <input type="text" placeholder="Напр. 28">
+            <!-- Блок II -->
+            <h2>II. Игровой опыт</h2>
+            <div class="field">
+                <label>Прошлые фракции и ранги:</label>
+                <textarea id="exp" placeholder="LSPD (PO II) при Nick_Name..."></textarea>
+            </div>
+            <div class="field">
+                <label>Доказательства (ссылки):</label>
+                <input type="text" id="proof" placeholder="://imgur.com...">
             </div>
 
-            <div class="form-group">
-                <label>Ссылка на ваш профиль VK / Discord:</label>
-                <input type="text" placeholder="://vk.com..." required>
-            </div>
-
-            <hr>
-
-            <!-- Часть II: Опыт работы -->
-            <h2 style="color: #fff; border-bottom: 1px solid #3498db; display: inline-block;">II. Игровой опыт</h2>
-
-            <div class="form-group">
-                <label>В каких фракциях состояли ранее? (Укажите проекты и ранги):</label>
-                <textarea placeholder="Напр. LSPD (PO III) на Gambit RP, LSSD (SGT) на MyHome..."></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>Причина ухода из департамента:</label>
-                <input type="text" placeholder="ПСЖ / Расформирование / Переезд...">
-            </div>
-
-            <div class="form-group">
-                <label>Доказательства игры (Скриншоты/Видео/СС):</label>
-                <input type="url" placeholder="Imgur / YouTube link">
-            </div>
-
-            <hr>
-
-            <!-- Часть III: Дополнительно -->
-            <h2 style="color: #fff; border-bottom: 1px solid #3498db; display: inline-block;">III. OOC Информация</h2>
-
-            <div class="form-group">
-                <label>Ваш часовой пояс:</label>
-                <select>
-                    <option>МСК (UTC +3)</option>
-                    <option>Киев (UTC +2/3)</option>
-                    <option>Другое</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Расскажите немного о себе и своих планах во фракции:</label>
-                <textarea placeholder="Почему именно вы должны вернуться?"></textarea>
-            </div>
-
-            <button type="submit" class="btn-submit">Отправить анкету</button>
+            <!-- Кнопка -->
+            <button type="button" class="btn-generate" onclick="generateBB()">СФОРМИРОВАТЬ BB-КОД</button>
         </form>
 
-        <p style="margin-top: 50px; font-size: 12px; color: #555;">
-            &copy; 2024 pd-ls.ru. Все права защищены. Разработано для сообщества.
-        </p>
+        <!-- Результат -->
+        <div id="result-area">
+            <p style="color: #27ae60; font-size: 14px;">Код скопирован в буфер обмена! Теперь просто вставь его на форум.</p>
+            <textarea id="bbcode-output" readonly style="height: 150px; font-family: monospace;"></textarea>
+        </div>
     </div>
 
+    <script>
+        function generateBB() {
+            // Собираем данные
+            const name = document.getElementById('name').value;
+            const contact = document.getElementById('contact').value;
+            const exp = document.getElementById('exp').value;
+            const proof = document.getElementById('proof').value;
+
+            // Формируем BB-код
+            const bb = `[CENTER][IMG]https://pd-ls.rulogo.png[/IMG]\n` +
+                       `[B][SIZE=5]ЗАЯВЛЕНИЕ ПО ПРОГРАММЕ BACKHOME[/SIZE][/B][/CENTER]\n\n` +
+                       `[B]Имя Фамилия:[/B] ${name}\n` +
+                       `[B]Связь с вами:[/B] ${contact}\n` +
+                       `[HR][/HR]\n` +
+                       `[B]Игровой опыт:[/B]\n${exp}\n\n` +
+                       `[B]Доказательства:[/B] [URL]${proof}[/URL]\n` +
+                       `[RIGHT][B]Дата:[/B] ${new Date().toLocaleDateString()}\n` +
+                       `[B]Подпись:[/B] TEXT[/RIGHT]`;
+
+            // Выводим в поле
+            const output = document.getElementById('bbcode-output');
+            output.value = bb;
+            document.getElementById('result-area').style.display = 'block';
+
+            // Автоматическое копирование
+            output.select();
+            document.execCommand('copy');
+            
+            // Скролл вниз к коду
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
