@@ -208,17 +208,23 @@
 
         <div class="main-container">
     <!-- Блок соглашения -->
-  <div style="text-align: center; margin-top: 30px;">
-    <div style="margin-bottom: 15px;">
-        <input type="checkbox" id="final_agree" style="transform: scale(1.5); cursor: pointer;">
-        <label for="final_agree" style="color: #fff; margin-left: 10px; cursor: pointer; font-family: Arial;">
+ <div style="text-align: center; margin-top: 40px; padding: 20px; background: #1e1e1e; border-radius: 5px;">
+    <!-- Текст соглашения в точности как в БХ -->
+    <p style="color: #888; font-size: 12px; line-height: 1.5; margin-bottom: 15px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением: Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества. Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.
+    </p>
+
+    <!-- Галочка -->
+    <div style="margin-bottom: 20px;">
+        <input type="checkbox" id="final_agree" style="transform: scale(1.5); cursor: pointer; vertical-align: middle;">
+        <label for="final_agree" style="color: #fff; margin-left: 10px; cursor: pointer; font-weight: bold; font-family: Arial;">
             Я подтверждаю и согласен с условиями
         </label>
     </div>
 
-    <!-- Та самая кнопка -->
-    <button type="button" class="btn-generate" onclick="fullAutoSubmit()" style="background: #27ae60; color: white; border: none; padding: 20px 40px; font-size: 20px; font-weight: bold; cursor: pointer; border-radius: 5px; text-transform: uppercase;">
-        Отправить заявку на форум
+    <!-- Кнопка -->
+    <button type="button" onclick="submitToForum()" style="background: #27ae60; color: white; border: none; padding: 20px 0; width: 100%; max-width: 800px; font-size: 20px; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">
+        ОТПРАВИТЬ ЗАЯВКУ НА ФОРУМ
     </button>
 </div>
 
@@ -234,19 +240,25 @@
     </div>
 </div>
     <script>
-       function fullAutoSubmit() {
-    // 1. Проверка галочки (БЕЗ НЕЁ НЕ ПУСТИТ)
-    const agreed = document.getElementById('final_agree').checked;
-    if (!agreed) {
-        alert("ОШИБКА: Сначала примите условия соглашения!");
+       function submitToForum() {
+    // 1. Проверка галочки
+    const isAgreed = document.getElementById('final_agree').checked;
+    if (!isAgreed) {
+        alert("Сначала примите условия соглашения (поставьте галочку)!");
         return;
     }
 
-    // 2. Сбор данных (убедись, что ID полей в твоем HTML совпадают!)
-    const name = document.getElementById('name')?.value || "Заполнить";
-    const exp = document.getElementById('exp')?.value || "Заполнить";
-    const proof = document.getElementById('proof')?.value || "Заполнить";
-    const role = document.getElementById('role')?.value || "Заполнить";
+    // 2. Сбор данных (проверь, чтобы ID полей в твоем коде совпадали!)
+    const d = {
+        name: document.getElementById('name')?.value || "Заполнить",
+        age: document.getElementById('age')?.value || "XX",
+        exp: document.getElementById('exp')?.value || "Заполнить",
+        proof: document.getElementById('proof')?.value || "Заполнить",
+        role: document.getElementById('role')?.value || "Заполнить",
+        vk: document.getElementById('vk')?.value || "Заполнить",
+        auth: document.getElementById('auth')?.value || "Заполнить",
+        wishes: document.getElementById('wishes')?.value || "Заполнить"
+    };
 
     // 3. Формируем чистый BB-код
      const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
@@ -270,13 +282,17 @@
 Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
 
 [box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
-     // 4. Загружаем данные в скрытую форму
-    document.getElementById('post_subject').value = "BackHome Application - " + name;
-    document.getElementById('post_message').value = bbCode;
+      // 4. КОПИРУЕМ В БУФЕР (Чтобы не было ошибки 414)
+    const el = document.createElement('textarea');
+    el.value = bb;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
 
-    // 5. ФИНАЛЬНЫЙ АВТОМАТ: Отправляем данные на форум
-    alert("Заявка сформирована! Сейчас откроется страница форума с уже готовым текстом. Тебе останется только нажать 'Отправить' внизу.");
-    document.getElementById('autoForumForm').submit();
+    // 5. ПЕРЕХОД
+    alert("Заявка сформирована и СКОПИРОВАНА! На форуме просто нажми Ctrl + V в окне сообщения.");
+    window.location.href = "https://pd-ls.ru/posting.php?mode=post&f=24";
 }
     </script>
 </body>
