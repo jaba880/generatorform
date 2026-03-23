@@ -209,9 +209,10 @@
         <div class="main-container">
     <!-- Блок соглашения -->
    <div style="background: #0f2940; padding: 20px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
-    <p style="color: #fff; font-size: 13px; margin-bottom: 15px;"> <input type="checkbox" id="final_agree">Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
+    <p style="color: #fff; font-size: 13px; margin-bottom: 15px;">Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
 
 Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.
+        <input type="checkbox" id="final_agree">
 </p>
 </div>
 
@@ -221,7 +222,7 @@
 </button>
 
 <!-- Скрытая форма для обхода лимита ссылки -->
-<form id="hiddenForumForm" action="https://pd-ls.ru" method="POST" target="_blank" style="display:none;">
+<form id="hiddenForumForm" action="https://pd-ls.ru/posting.php?mode=post&f=24" method="POST" target="_blank" style="display:none;">
     <input type="hidden" name="subject" id="form_subject">
     <textarea name="message" id="form_message"></textarea>
     <input type="hidden" name="post" value="1">
