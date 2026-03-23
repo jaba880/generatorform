@@ -241,27 +241,26 @@
 </div>
     <script>
        function submitToForum() {
-    // 1. Проверка галочки
+    // Проверка галочки
     const isAgreed = document.getElementById('final_agree').checked;
     if (!isAgreed) {
         alert("Сначала примите условия соглашения (поставьте галочку)!");
         return;
     }
 
-    // 2. Сбор данных (проверь, чтобы ID полей в твоем коде совпадали!)
-    const d = {
-        name: document.getElementById('name')?.value || "Заполнить",
-        age: document.getElementById('age')?.value || "XX",
-        exp: document.getElementById('exp')?.value || "Заполнить",
-        proof: document.getElementById('proof')?.value || "Заполнить",
-        role: document.getElementById('role')?.value || "Заполнить",
-        vk: document.getElementById('vk')?.value || "Заполнить",
-        auth: document.getElementById('auth')?.value || "Заполнить",
-        wishes: document.getElementById('wishes')?.value || "Заполнить"
-    };
+    // Заполняете все ваши переменные (например, name, age, exp и т.п., если есть)
+    const name = "..."; // ваши данные
+    const age = "...";  
+    const exp = "...";  
+    const proof = "...";  
+    const role = "...";  
+    const wishes = "...";  
+    const nameIC = "...";  
+    const vkLink = "...";  
+    const auth = "...";
 
-    // 3. Формируем чистый BB-код
-     const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
+    // Формируем BB-код
+    const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
 [b][size=115][border=#0f2940]Заявление[/border][/size][/b]
 [list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
 [*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proof}
@@ -270,7 +269,7 @@
 [*][b]Список пожеланий, комментарий:[/b] ${wishes}
 
 [*][b]Имя:[/b] ${nameIC}
-[*][b]Возраст:[/b] ${age} лет
+[*][b]Возраст:[/b] ${age}
 [*][b]Ссылка на профиль ВК:[/b] [url=${vkLink}]Имя Фамилия[/url]
 [*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${auth}]Ссылка на скриншот[/url][/list]
 
@@ -282,7 +281,8 @@
 Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
 
 [box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
-      // 4. КОПИРУЕМ В БУФЕР (Чтобы не было ошибки 414)
+
+    // 1. Запомним BB-код в буфер
     const el = document.createElement('textarea');
     el.value = bb;
     document.body.appendChild(el);
@@ -290,9 +290,13 @@
     document.execCommand('copy');
     document.body.removeChild(el);
 
-    // 5. ПЕРЕХОД
-    alert("Заявка сформирована и СКОПИРОВАНА! На форуме просто нажми Ctrl + V в окне сообщения.");
-    window.location.href = "https://pd-ls.ru/posting.php?mode=post&f=24";
+    // 2. Открываем окно форума
+    // Здесь пример — открыть новое окно или вкладку, вставить BB-код в поле вручную
+    // или — перейти по ссылке с параметром BB-кода, если форум поддерживает это
+    window.open('https://pd-ls.ru/posting.php?mode=reply&f=24', '_blank');
+
+    // Вручную вставьте BB-код в поле сообщения на форуме, если автоматическая вставка невозможна.
+    alert("BB-код скопирован в буфер! В новом окне вставьте его в сообщение (Ctrl+V).");
 }
     </script>
 </body>
