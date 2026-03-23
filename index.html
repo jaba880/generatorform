@@ -218,36 +218,49 @@
     </div>
 
     <script>
-        function generateBB() {
-            // Собираем данные
-            const name = document.getElementById('name').value;
-            const contact = document.getElementById('contact').value;
-            const exp = document.getElementById('exp').value;
-            const proof = document.getElementById('proof').value;
+       function generateBB() {
+    // Получаем данные из полей (убедись, что ID полей в HTML соответствуют этим названиям)
+    const nameIC = document.getElementById('name').value || "Заполнить";
+    const age = document.getElementById('age')?.value || "XX"; 
+    const vkLink = document.getElementById('contact').value || "https://vk.com/IDVK";
+    const exp = document.getElementById('exp').value || "Заполнить";
+    const proof = document.getElementById('proof').value || "Заполнить";
+    const role = document.getElementById('role')?.value || "описание вашего будущего персонажа...";
+    const wishes = document.getElementById('wishes')?.value || "Заполнить";
+    const auth = document.getElementById('auth')?.value || "Ссылка на скриншот";
 
-            // Формируем BB-код
-            const bb = `[CENTER][IMG]https://pd-ls.rulogo.png[/IMG]\n` +
-                       `[B][SIZE=5]ЗАЯВЛЕНИЕ ПО ПРОГРАММЕ BACKHOME[/SIZE][/B][/CENTER]\n\n` +
-                       `[B]Имя Фамилия:[/B] ${name}\n` +
-                       `[B]Связь с вами:[/B] ${contact}\n` +
-                       `[HR][/HR]\n` +
-                       `[B]Игровой опыт:[/B]\n${exp}\n\n` +
-                       `[B]Доказательства:[/B] [URL]${proof}[/URL]\n` +
-                       `[RIGHT][B]Дата:[/B] ${new Date().toLocaleDateString()}\n` +
-                       `[B]Подпись:[/B] TEXT[/RIGHT]`;
+    // Формируем строгий формат по твоему образцу
+    const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
+[b][size=115][border=#0f2940]Заявление[/border][/size][/b]
+[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
+[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proof}
+[*][b]Планируемая роль во фракции:[/b]
+[spoiler="Роль"]${role}[/spoiler]
+[*][b]Список пожеланий, комментарий:[/b] ${wishes}
 
-            // Выводим в поле
-            const output = document.getElementById('bbcode-output');
-            output.value = bb;
-            document.getElementById('result-area').style.display = 'block';
+[*][b]Имя:[/b] ${nameIC}
+[*][b]Возраст:[/b] ${age} лет
+[*][b]Ссылка на профиль ВК:[/b] [url=${vkLink}]Имя Фамилия[/url]
+[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${auth}]Ссылка на скриншот[/url][/list]
 
-            // Автоматическое копирование
-            output.select();
-            document.execCommand('copy');
-            
-            // Скролл вниз к коду
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-        }
+[hr][/hr]
+[b][size=115][border=#0f2940]Соглашение[/border][/size][/b]
+[list][b]Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением:[/b]
+[list][i]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
+
+Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
+
+[box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
+
+    // Вывод и автокопирование
+    const output = document.getElementById('bbcode-output');
+    output.value = bb;
+    document.getElementById('result-area').style.display = 'block';
+    output.select();
+    document.execCommand('copy');
+    
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
     </script>
 </body>
 </html>
