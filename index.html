@@ -170,42 +170,44 @@
         <div class="sub-header">Подача заявления на восстановление в ЛСПД</div>
 
         <form id="bhForm">
-            <!-- Блок I -->
-            <h2>I. Заявление</h2>
-            <div class="field">
-                <label>Фракции в которых состояли (Никнейм, проект, должность, причины и даты ухода):</label>
-                <input type="text" id="name" placeholder="Заполнить">
-            </div>
-            <div class="field">
-                <label>Доказательства игры (СС, не обязательно за копов):</label>
-                <input type="text" id="contact" placeholder="Заполнить">
-            </div>
-                <div class="field">
-                <label>Планируемая роль во фракции:</label>
-                <textarea id="exp" placeholder="Описание вашего будущего персонажа, не менее 3-4 предложений."></textarea>
-            </div>
-            <div class="field">
-                <label>Список пожеланий, комментарий::</label>
-                <input type="text" id="proof" placeholder="Заполнить">
-            </div>
-            <!-- Блок II -->
-            <h2>II. ООС Информация</h2>
-            <div class="field">
-                <label>Имя:</label>
-                <input type="text" id="name" placeholder="Заполнить">
-            </div>
-             <div class="field">
-                <label>Возвраст:</label>
-                <input type="text" id="contact" placeholder="Заполнить">
-            </div>
-             <div class="field">
-                <label>Ссылка на профиль ВК:</label>
-                <input type="text" id="contact" placeholder="Заполнить">
-            </div>
-            <div class="field">
-                <label>Скриншот включенного Google Authenticator (без каких-либо обработок):</label>
-                <input type="text" id="contact" placeholder="Заполнить">
-              </div> 
+    <!-- Блок I -->
+    <h2>I. Заявление</h2>
+    <div class="field">
+        <label>Фракции в которых состояли (Никнейм, проект, должность, причины и даты ухода):</label>
+        <input type="text" id="faction_names" placeholder="Заполнить">
+    </div>
+    <div class="field">
+        <label>Доказательства игры (СС, не обязательно за копов):</label>
+        <input type="text" id="game_evidence" placeholder="Заполнить">
+    </div>
+    <div class="field">
+        <label>Планируемая роль во фракции:</label>
+        <textarea id="role_plan" placeholder="Описание вашего будущего персонажа, не менее 3-4 предложений."></textarea>
+    </div>
+    <div class="field">
+        <label>Список пожеланий, комментарий:</label>
+        <input type="text" id="comments" placeholder="Заполнить">
+    </div>
+
+    <!-- Блок II -->
+    <h2>II. ООС Информация</h2>
+    <div class="field">
+        <label>Имя:</label>
+        <input type="text" id="ooc_name" placeholder="Заполнить">
+    </div>
+    <div class="field">
+        <label>Возраст:</label>
+        <input type="text" id="ooc_age" placeholder="Заполнить">
+    </div>
+    <div class="field">
+        <label>Ссылка на профиль ВК:</label>
+        <input type="text" id="vk_profile" placeholder="Заполнить">
+    </div>
+    <div class="field">
+        <label>Скриншот включенного Google Authenticator:</label>
+        <input type="text" id="auth_screenshot" placeholder="Заполнить">
+    </div>
+</form>
 
         <div class="main-container">
     <!-- Блок соглашения -->
@@ -241,63 +243,46 @@
     </div>
 </div>
     <script>
-       function submitToForum() {
-    // Проверка галочки
-    const isAgreed = document.getElementById('final_agree').checked;
-    if (!isAgreed) {
-        alert("Сначала примите условия соглашения (поставьте галочку)!");
+      function submitToForum() {
+    const agreed = document.getElementById('final_agree').checked;
+    if (!agreed) {
+        alert("Пожалуйста, примите условия соглашения!");
         return;
     }
 
-    // Заполняете все ваши переменные (например, name, age, exp и т.п., если есть)
-    const name = "..."; // ваши данные
-    const age = "...";  
-    const exp = "...";  
-    const proof = "...";  
-    const role = "...";  
-    const wishes = "...";  
-    const nameIC = "...";  
-    const vkLink = "...";  
-    const auth = "...";
+    // Получаем значения из формы
+    const factionNames = document.getElementById('faction_names').value;
+    const gameEvidence = document.getElementById('game_evidence').value;
+    const rolePlan = document.getElementById('role_plan').value;
+    const comments = document.getElementById('comments').value;
+    const oocName = document.getElementById('ooc_name').value;
+    const oocAge = document.getElementById('ooc_age').value;
+    const vkProfile = document.getElementById('vk_profile').value;
+    const authScreenshot = document.getElementById('auth_screenshot').value;
 
-    // Формируем BB-код
-    const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
-[b][size=115][border=#0f2940]Заявление[/border][/size][/b]
-[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
-[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proof}
-[*][b]Планируемая роль во фракции:[/b]
-[spoiler="Роль"]${role}[/spoiler]
-[*][b]Список пожеланий, комментарий:[/b] ${wishes}
+    // Формируем BB-код или сообщение
+    const message = `
+[I. Заявление]
+Фракции: ${factionNames}
+Доказательства: ${gameEvidence}
+План роли: ${rolePlan}
+Комментарии: ${comments}
 
-[*][b]Имя:[/b] ${nameIC}
-[*][b]Возраст:[/b] ${age}
-[*][b]Ссылка на профиль ВК:[/b] [url=${vkLink}]Имя Фамилия[/url]
-[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${auth}]Ссылка на скриншот[/url][/list]
+[II. ООС Информация]
+Имя: ${oocName}
+Возраст: ${oocAge}
+ВК: ${vkProfile}
+Скрин: ${authScreenshot}
+`;
 
-[hr][/hr]
-[b][size=115][border=#0f2940]Соглашение[/border][/size][/b]
-[list][b]Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением:[/b]
-[list][i]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
+    // Заполняем скрытую форму
+    document.getElementById('post_subject').value = "Заявление на восстановление";
+    document.getElementById('post_message').value = message;
 
-Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
+    // Отправляем форму
+    document.getElementById('autoForumForm').submit();
 
-[box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
-
-    // 1. Запомним BB-код в буфер
-    const el = document.createElement('textarea');
-    el.value = bb;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand('copy');
-    document.body.removeChild(el);
-
-    // 2. Открываем окно форума
-    // Здесь пример — открыть новое окно или вкладку, вставить BB-код в поле вручную
-    // или — перейти по ссылке с параметром BB-кода, если форум поддерживает это
-    window.open('https://pd-ls.ru/posting.php?mode=post&f=24', '_blank');
-
-    // Вручную вставьте BB-код в поле сообщения на форуме, если автоматическая вставка невозможна.
-    alert("BB-код скопирован в буфер! В новом окне вставьте его в сообщение (Ctrl+V).");
+    // Можно добавить отображение результата или копирование
 }
     </script>
 </body>
