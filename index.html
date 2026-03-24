@@ -242,57 +242,50 @@
     </div>
 </div>
     <script>
-      function submitToForum() {
-    const agreed = document.getElementById('final_agree').checked;
-    if (!agreed) {
-        alert("Пожалуйста, примите условия соглашения!");
+function submitToForum() {
+    const agreeCheckbox = document.getElementById('final_agree');
+    if (!agreeCheckbox.checked) {
+        alert('Пожалуйста, подтвердите ваше согласие, поставив галочку.');
         return;
     }
 
-    // Получаем значения из формы
-    const factionNames = document.getElementById('faction_names').value;
-    const gameEvidence = document.getElementById('game_evidence').value;
-    const rolePlan = document.getElementById('role_plan').value;
-    const comments = document.getElementById('comments').value;
-    const oocName = document.getElementById('ooc_name').value;
-    const oocAge = document.getElementById('ooc_age').value;
-    const vkProfile = document.getElementById('vk_profile').value;
-    const authScreenshot = document.getElementById('auth_screenshot').value;
+    // Получение данных из формы
+    const factionNames = document.getElementById('faction_names').value.trim();
+    const gameEvidence = document.getElementById('game_evidence').value.trim();
+    const rolePlan = document.getElementById('role_plan').value.trim();
+    const comments = document.getElementById('comments').value.trim();
+    const oocName = document.getElementById('ooc_name').value.trim();
+    const oocAge = document.getElementById('ooc_age').value.trim();
+    const vkProfile = document.getElementById('vk_profile').value.trim();
+    const authScreenshot = document.getElementById('auth_screenshot').value.trim();
 
-    // Формируем BB-код или сообщение
-    // Формируем BB-код сообщения по шаблону
-const message = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
-[b][size=115][border=#0f2940]Заявление[/border][/size][/b]
-[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] Заполнить
-[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] Заполнить
-[*][b]Планируемая роль во фракции:[/b]
-[spoiler="Роль"]описание вашего будущего персонажа, не менее 3-4 предложений.[/spoiler]
-[*][b]Список пожеланий, комментарий:[/b] Заполнить
+    // Формируем BB-код
+    const bbcode = `[b]Заявление[/b]\n\n` +
+        `[b]I. Заявление[/b]\n` +
+        `Фракции в которых состояли: ${factionNames}\n` +
+        `Доказательства игры: ${gameEvidence}\n` +
+        `Планируемая роль во фракции: ${rolePlan}\n` +
+        `Комментарии: ${comments}\n\n` +
+        `[b]II. ООС Информация[/b]\n` +
+        `Имя: ${oocName}\n` +
+        `Возраст: ${oocAge}\n` +
+        `Ссылка на ВК: ${vkProfile}\n` +
+        `Скриншот Google Authenticator: ${authScreenshot}`;
 
+    // копируем в буфер
+    navigator.clipboard.writeText(bbcode).then(() => {
+        alert('Код скопирован в буфер обмена!');
 
-[*][b]Имя:[/b] Заполнить
-[*][b]Возраст:[/b] XX лет
-[*][b]Ссылка на профиль ВК:[/b] [url=https://vk.com/IDVK]Имя Фамилия[/url]
-[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=http://ССЫЛКУ%20СЮДА]Ссылка на скриншот[/url][/list]
+        //Заполняем скрытую форму
+        document.getElementById('post_subject').value = 'Заявление на восстановление в ЛСПД';
+        document.getElementById('post_message').value = bbcode;
 
-[hr][/hr]
-[b][size=115][border=#0f2940]Соглашение[/border][/size][/b]
-[list][b]Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением:[/b]
-[list][i]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
-
-Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
-
-[box=#0f2940][color=#798c96][size=85][center]Copyright ©2025 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
-
-    // Заполняем скрытую форму
-    document.getElementById('post_subject').value = "Заявление на восстановление";
-    document.getElementById('post_message').value = message;
-
-    // Отправляем форму
-    document.getElementById('autoForumForm').submit();
-
-    // Можно добавить отображение результата или копирование
+        // Отправляем форму
+        document.getElementById('autoForumForm').submit();
+    }).catch(() => {
+        alert('Не удалось скопировать в буфер. Попробуйте вручную.');
+    });
 }
-    </script>
+</script>
 </body>
 </html>
