@@ -283,19 +283,17 @@ function submitToForum() {
 [box=#0f2940][color=#798c96][size=85][center]Copyright ©2025 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;    
      
     // копируем в буфер
-    navigator.clipboard.writeText(bbcode).then(() => {
-        alert('Код скопирован в буфер обмена!'); 
+navigator.clipboard.writeText(bbcode).then(() => {
+    // alert('Код скопирован в буфер обмена!'); // УБРАТЬ или закомментировать
+    // Заполняем скрытую форму
+    document.getElementById('post_subject').value = '[Back Home] Name Surname (форумный ник)';
+    document.getElementById('post_message').value = bbcode;
 
-        //Заполняем скрытую форму
-        document.getElementById('post_subject').value = '[Back Home] Name Surname (форумный ник)';
-        document.getElementById('post_message').value = bbcode;
-
-        // Отправляем форму
-        document.getElementById('autoForumForm').submit();
-    }).catch(() => {
-        alert('Не удалось скопировать в буфер. Попробуйте вручную.');
-    });
-}
+    // Отправляем форму
+    document.getElementById('autoForumForm').submit();
+}).catch(() => {
+    alert('Не удалось скопировать в буфер. Попробуйте вручную.');
+});
 </script>
 </body>
 </html>
