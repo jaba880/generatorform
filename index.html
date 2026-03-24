@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -5,12 +6,11 @@
     <title>BackHome Generator | pd-ls.ru</title>
     <style>
         :root {
-            --bg-color: #0c0c0c;
-            --container-bg: #121212;
-            --accent-blue: #14243b;
-            --bright-blue: #3498db;
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --accent-blue: #3498db;
             --text-main: #e0e0e0;
-            --input-bg: #1a1a1a;
+            --input-bg: #2a2a2a;
         }
 
         body {
@@ -24,218 +24,281 @@
             padding-bottom: 50px;
         }
 
-        /* 1 & 2. Увеличенная шапка экстренных служб, смещенная вправо */
+        /* Шапка с экстренными службами */
         .emergency-nav {
             width: 100%;
             background: #181818;
-            padding: 25px 50px; /* Увеличено */
-            border-bottom: 2px solid var(--bright-blue);
-            display: flex;
-            justify-content: flex-end; /* Смещено вправо */
-            box-sizing: border-box;
+            padding: 15px 0;
+            border-bottom: 2px solid var(--accent-blue);
+            text-align: center;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
         .dropbtn {
             background: none;
-            border: 2px solid var(--bright-blue);
+            border: 2px solid var(--accent-blue);
             color: white;
-            padding: 12px 25px;
+            padding: 10px 20px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
         }
 
-        /* 3. Увеличенное верхнее окно под логотип, название и девиз */
-        .main-header {
-            width: 100%;
-            max-width: 900px;
-            margin: 30px auto 10px auto;
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #252525;
+            min-width: 250px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            padding: 20px;
-            background: var(--container-bg);
-            border: 1px solid #222;
-            border-bottom: none;
-            box-sizing: border-box;
+            gap: 15px;
+            border-bottom: 1px solid #333;
         }
 
-        .header-logo {
-            height: 90px; /* Размер логотипа */
-            margin-right: 25px;
-        }
-
-        .header-info {
-            text-align: left;
-        }
-
-        .header-info h1 {
-            margin: 0;
-            font-size: 26px;
-            letter-spacing: 1px;
-            color: #fff;
-            text-transform: uppercase;
-        }
-
-        .header-info p {
-            margin: 5px 0 0 0;
-            color: var(--bright-blue);
-            font-style: italic;
-            font-size: 15px;
-        }
+        .dropdown-content a:hover { background-color: #333; }
+        .dropdown-content img { width: 30px; height: 30px; }
+        .dropdown:hover .dropdown-content { display: block; }
 
         /* Контейнер формы */
         .main-container {
-            max-width: 900px;
-            width: 100%;
+            max-width: 800px;
+            width: 95%;
+            margin-top: 40px;
             background: var(--container-bg);
             padding: 40px;
-            border: 1px solid #222;
-            box-sizing: border-box;
+            border-radius: 4px;
+            text-align: center;
         }
+
+        h1 { font-size: 28px; letter-spacing: 3px; margin-bottom: 5px; }
+        .sub-header { color: #888; font-size: 14px; margin-bottom: 40px; }
 
         h2 {
-            font-size: 18px;
-            color: var(--bright-blue);
+            font-size: 20px;
+            color: var(--accent-blue);
             border-bottom: 1px solid #333;
             padding-bottom: 10px;
-            margin-top: 30px;
+            margin-top: 40px;
             text-transform: uppercase;
-            text-align: left;
         }
 
-        .field { text-align: left; margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 13px; color: #aaa; }
+        .field {
+            text-align: left;
+            margin-bottom: 20px;
+        }
 
-        input, textarea {
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 13px; }
+
+        input, textarea, select {
             width: 100%;
             background: var(--input-bg);
-            border: 1px solid #333;
+            border: 1px solid #444;
             color: white;
             padding: 12px;
             border-radius: 3px;
             box-sizing: border-box;
         }
 
-        /* Кнопка отправки */
         .btn-generate {
             background: #27ae60;
             color: white;
             border: none;
-            padding: 20px;
+            padding: 15px 30px;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 30px;
             width: 100%;
-            margin-top: 20px;
-            text-transform: uppercase;
+            transition: 0.3s;
         }
 
-        /* 4. Исправленное соглашение */
-        .agreement-box {
-            background: #1a1a1a;
+        .btn-generate:hover { background: #2ecc71; }
+
+        /* Окно с результатом */
+        #result-area {
+            display: none;
+            margin-top: 30px;
+            background: #000;
             padding: 20px;
-            margin: 30px 0;
-            border-left: 4px solid var(--bright-blue);
-            text-align: left;
-        }
-
-        .agreement-text {
-            font-size: 13px;
-            color: #888;
-            line-height: 1.5;
+            border: 1px dashed var(--accent-blue);
         }
     </style>
 </head>
 <body>
 
-    <!-- 1 & 2. Шапка вправо и больше -->
+    <!-- Навигация -->
     <nav class="emergency-nav">
-        <button class="dropbtn">Для экстренных служб ▼</button>
+        <div class="dropdown">
+            <button class="dropbtn">Для экстренных служб ▼</button>
+            <div class="dropdown-content">
+                <a href="https://pd-ls.ru/viewforum.php?f=10" target="_blank">
+                    <img src="https://pd-ls.ru/styles/lspdAlternative/theme/images/lsCityLogo.png">
+                    Los Santos Police Departament
+               </a>
+                <a href="https://sd.ls-services.ru/viewforum.php?f=4" target="_blank">
+                    <img src="https://sd.ls-services.ru/styles/lssdAlternative/theme/images/lsCountyLogo.png">
+                    Los Santos County Sheriff
+                </a>
+                <a href="https://fbi-ls.ru" target="_blank">
+                    <img src="https://fbi-ls.ru/images/ranks/FBI_logo.png">
+                    Federal Bureau of Investigation
+                </a>
+            </div>
+        </div>
     </nav>
 
-    <!-- 3. Окно с логотипом и девизом -->
-    <header class="main-header">
-        <img src="https://pd-ls.ru" class="header-logo">
-        <div class="header-info">
-            <h1>Los Angeles Police Department</h1>
-            <p>To Protect and to Serve — Служить и защищать</p>
-        </div>
-    </header>
-
     <div class="main-container">
+        <h1>ПРОГРАММА BACKHOME</h1>
+        <div class="sub-header">Подача заявления на восстановление в ЛСПД</div>
+
         <form id="bhForm">
+            <!-- Блок I -->
             <h2>I. Заявление</h2>
             <div class="field">
-                <label>Опыт игры (Проект, должность, даты):</label>
-                <input type="text" id="exp" placeholder="Заполнить">
+                <label>Фракции в которых состояли (Никнейм, проект, должность, причины и даты ухода):</label>
+                <input type="text" id="name" placeholder="Заполнить">
             </div>
             <div class="field">
-                <label>Доказательства игры (СС/Скриншоты):</label>
-                <input type="text" id="proof" placeholder="Ссылки на imgur/yapx">
+                <label>Доказательства игры (СС, не обязательно за копов):</label>
+                <input type="text" id="contact" placeholder="Заполнить">
+            </div>
+                <div class="field">
+                <label>Планируемая роль во фракции:</label>
+                <textarea id="exp" placeholder="Описание вашего будущего персонажа, не менее 3-4 предложений."></textarea>
             </div>
             <div class="field">
-                <label>Ваша роль и пожелания:</label>
-                <textarea id="role" rows="4" placeholder="Краткое описание персонажа"></textarea>
+                <label>Список пожеланий, комментарий::</label>
+                <input type="text" id="proof" placeholder="Заполнить">
             </div>
-
-            <h2>II. ООС Данные</h2>
+            <!-- Блок II -->
+            <h2>II. ООС Информация</h2>
             <div class="field">
-                <label>Ссылка на ВК / Discord:</label>
-                <input type="text" id="vk" placeholder="Заполнить">
+                <label>Имя:</label>
+                <input type="text" id="name" placeholder="Заполнить">
             </div>
-
-            <!-- 4. Исправленное соглашение -->
-            <div class="agreement-box">
-                <p class="agreement-text">
-                    Я подтверждаю подлинность всех данных и обязуюсь соблюдать внутренний регламент департамента. 
-                    Моя подпись ниже означает полное согласие с условиями программы восстановления.
-                </p>
+             <div class="field">
+                <label>Возвраст:</label>
+                <input type="text" id="contact" placeholder="Заполнить">
             </div>
-
-            <div style="margin-bottom: 20px; text-align: left;">
-                <input type="checkbox" id="final_agree" style="transform: scale(1.3); cursor: pointer;">
-                <label for="final_agree" style="display: inline; margin-left: 10px; cursor: pointer;">Я принимаю условия соглашения</label>
+             <div class="field">
+                <label>Ссылка на профиль ВК:</label>
+                <input type="text" id="contact" placeholder="Заполнить">
             </div>
+            <div class="field">
+                <label>Скриншот включенного Google Authenticator (без каких-либо обработок):</label>
+                <input type="text" id="contact" placeholder="Заполнить">
+              </div> 
 
-            <!-- 5. Автоматизированная кнопка -->
-            <button type="button" class="btn-generate" onclick="submitToForum()">Отправить заявку на форум</button>
-        </form>
+        <div class="main-container">
+    <!-- Блок соглашения -->
+ <div style="text-align: center; margin-top: 40px; padding: 20px; background: #1e1e1e; border-radius: 5px;">
+    <!-- Текст соглашения в точности как в БХ -->
+    <p style="color: #888; font-size: 12px; line-height: 1.5; margin-bottom: 15px; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением: Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества. Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.
+    </p>
+
+    <!-- Галочка -->
+    <div style="margin-bottom: 20px;">
+        <input type="checkbox" id="final_agree" style="transform: scale(1.5); cursor: pointer; vertical-align: middle;">
+        <label for="final_agree" style="color: #fff; margin-left: 10px; cursor: pointer; font-weight: bold; font-family: Arial;">
+            Я подтверждаю и согласен с условиями
+        </label>
     </div>
 
+    <!-- Кнопка -->
+    <button type="button" onclick="submitToForum()" style="background: #27ae60; color: white; border: none; padding: 20px 0; width: 100%; max-width: 800px; font-size: 20px; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;">
+        ОТПРАВИТЬ ЗАЯВКУ НА ФОРУМ
+    </button>
+</div>
+
+<!-- СКРЫТАЯ ФОРМА: Она не видна юзеру, но делает всю работу -->
+<form id="autoForumForm" action="https://pd-ls.ru" method="POST" style="display:none;">
+    <input type="hidden" name="subject" id="post_subject">
+    <textarea name="message" id="post_message"></textarea>
+    <input type="hidden" name="post" value="1"> 
+</form>
+    <div id="result-area" style="display: none; margin-top: 30px;">
+        <p style="color: #27ae60; font-weight: bold;">Код скопирован в буфер обмена!</p>
+        <textarea id="bbcode-output" readonly style="width: 100%; height: 200px; background: #000; color: #fff; padding: 10px; border: 1px solid #0f2940;"></textarea>
+    </div>
+</div>
     <script>
-        function submitToForum() {
-            // Проверка галочки
-            if (!document.getElementById('final_agree').checked) {
-                alert("Необходимо подтвердить согласие!");
-                return;
-            }
+       function submitToForum() {
+    // Проверка галочки
+    const isAgreed = document.getElementById('final_agree').checked;
+    if (!isAgreed) {
+        alert("Сначала примите условия соглашения (поставьте галочку)!");
+        return;
+    }
 
-            // 5. Автоматический сбор данных
-            const data = {
-                exp: document.getElementById('exp').value,
-                proof: document.getElementById('proof').value,
-                role: document.getElementById('role').value,
-                vk: document.getElementById('vk').value
-            };
+    // Заполняете все ваши переменные (например, name, age, exp и т.п., если есть)
+    const name = "..."; // ваши данные
+    const age = "...";  
+    const exp = "...";  
+    const proof = "...";  
+    const role = "...";  
+    const wishes = "...";  
+    const nameIC = "...";  
+    const vkLink = "...";  
+    const auth = "...";
 
-            // Формируем BB-код
-            const bb = `[b]Опыт игры:[/b] ${data.exp}\n[b]Доказательства:[/b] ${data.proof}\n[b]Роль:[/b] ${data.role}\n[b]Связь:[/b] ${data.vk}`;
+    // Формируем BB-код
+    const bb = `[box=#0f2940][img]https://www.upload.ee/image/13625296/16.png[/img][color=#FFFFFF]  Полицейский департамент Лос Сантоса > Возможности > Программа «Возвращение домой»[/color][/box]
+[b][size=115][border=#0f2940]Заявление[/border][/size][/b]
+[list=1][*][b]Фракции в которых состояли ([i]Никнейм, проект, должность, причины и даты ухода[/i]):[/b] ${exp}
+[*][b]Доказательства игры [i](СС, не обязательно за копов)[/i]:[/b] ${proof}
+[*][b]Планируемая роль во фракции:[/b]
+[spoiler="Роль"]${role}[/spoiler]
+[*][b]Список пожеланий, комментарий:[/b] ${wishes}
 
-            // Копируем в буфер
-            const el = document.createElement('textarea');
-            el.value = bb;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
+[*][b]Имя:[/b] ${nameIC}
+[*][b]Возраст:[/b] ${age}
+[*][b]Ссылка на профиль ВК:[/b] [url=${vkLink}]Имя Фамилия[/url]
+[*][b]Скриншот включенного Google Authenticator (без каких-либо обработок):[/b] [url=${auth}]Ссылка на скриншот[/url][/list]
 
-            // Переход на форум
-            window.open('https://pd-ls.ru', '_blank');
-            alert("Анкета скопирована! Вставьте её (Ctrl+V) в окно сообщения на форуме.");
-        }
+[hr][/hr]
+[b][size=115][border=#0f2940]Соглашение[/border][/size][/b]
+[list][b]Отправляя это заявление, вы автоматически соглашаетесь с приведенным ниже соглашением:[/b]
+[list][i]Я соглашаюсь со всеми правилами и условиями полицейского департамента. Также уверяю, что все данные мною ответы в этой заявке являются правдивыми, и я не имею конфликтов с полицейским департаментом и не состою в черном списке сообщества.
+
+Я согласен быть активным с аккаунта полицейского больше, чем с каких-либо других имеющихся у меня аккаунтов.[/i][/list][/list]
+
+[box=#0f2940][color=#798c96][size=85][center]Copyright ©2026 Полицейский департамент Лос Сантоса. Все права защищены.[/center][/size][/color][/box]`;
+
+    // 1. Запомним BB-код в буфер
+    const el = document.createElement('textarea');
+    el.value = bb;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    // 2. Открываем окно форума
+    // Здесь пример — открыть новое окно или вкладку, вставить BB-код в поле вручную
+    // или — перейти по ссылке с параметром BB-кода, если форум поддерживает это
+    window.open('https://pd-ls.ru/posting.php?mode=post&f=24', '_blank');
+
+    // Вручную вставьте BB-код в поле сообщения на форуме, если автоматическая вставка невозможна.
+    alert("BB-код скопирован в буфер! В новом окне вставьте его в сообщение (Ctrl+V).");
+}
     </script>
 </body>
 </html>
